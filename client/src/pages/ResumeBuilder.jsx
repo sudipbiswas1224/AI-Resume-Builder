@@ -18,6 +18,8 @@ import PersonalInfoForm from "../components/PersonalInfoForm";
 import ResumePreview from "../components/ResumePreview";
 import TemplateSelector from "../components/TemplateSelector";
 import ColorPicker from "../components/ColorPicker";
+import ProfessionalSummaryForm from "../components/ProfessionalSummaryForm";
+import ExperienceForm from "../components/ExperienceForm";
 
 const ResumeBuilder = () => {
   const { resumeId } = useParams();
@@ -26,6 +28,8 @@ const ResumeBuilder = () => {
     title: "",
     personal_info: {},
     professional_info: "",
+    professional_summary: "",
+    education: [],
     experience: [],
     project: [],
     skills: [],
@@ -142,7 +146,7 @@ const ResumeBuilder = () => {
                 </div>
               </div>
 
-              {/* form content */}
+              {/* form content -> Personal Information form  */}
               <div className="space-y-6">
                 {activeSection.id === "personal" && (
                   <PersonalInfoForm
@@ -155,6 +159,32 @@ const ResumeBuilder = () => {
                     }
                     removeBackground={removeBackground}
                     setRemoveBackground={setRemoveBackground}
+                  />
+                )}
+
+                {/* professional summay  */}
+                {activeSection.id === "summary" && (
+                  <ProfessionalSummaryForm
+                    data={resumeData.professional_summary}
+                    onChange={(data) =>
+                      setResumeData((prev) => ({
+                        ...prev,
+                        professional_summary: data,
+                      }))
+                    }
+                    setResumeData={setResumeData}
+                  />
+                )}
+
+                {/* Experience section */}
+                {activeSection.id === "experience" && (
+                  <ExperienceForm
+                    data={resumeData.experience}
+                    onChange={(data) => setResumeData((prev) => ({
+                      ...prev, 
+                      experience: data
+                    }))}
+        
                   />
                 )}
               </div>

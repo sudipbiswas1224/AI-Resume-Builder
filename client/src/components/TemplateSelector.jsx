@@ -26,13 +26,7 @@ const TemplateSelector = ({ selectedTemplate, onChange }) => {
       id: "minimal",
       name: "Minimal",
       preview: "Ultra-clean design that puts your content front and center",
-    },
-    {
-      id: "classic",
-      name: "Classic",
-      preview:
-        "A clean, traditional resume format with clear sections and professional typography",
-    },
+    }
   ];
   return (
     <div className="relative">
