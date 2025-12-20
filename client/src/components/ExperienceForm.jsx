@@ -15,12 +15,13 @@ const ExperienceForm = ({ data, onChange }) => {
     onChange([...data, newExperience]);
   };
 
-  /*  */
+  /* removing experience */
   const removeExperience = (ind) => {
     const updatedExperience = data.filter((_, i) => i !== ind);
     onChange(updatedExperience);
   };
 
+  /* updating experience */
   const updateExperience = (ind, field, value) => {
     const updated = [...data];
     updated[ind] = { ...updated[ind], [field]: value };
