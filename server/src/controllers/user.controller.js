@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt'
 import User from "../models/user.model";
 import userModel from '../models/user.model';
 import jwt from 'jsonwebtoken'
+import resumeModel from '../models/resume.model';
 
 // generate token 
 const generateToken = (userId) => {
@@ -55,7 +56,7 @@ export const registerUser = async (req, res) => {
 // controller for user login
 // POST: /api/users/login
 
-export default loginUser = async (req, res) => {
+export const loginUser = async (req, res) => {
     const { email, password } = req.body;
 
     try {
@@ -82,6 +83,47 @@ export default loginUser = async (req, res) => {
         return res.status(200).json({
             message: "Login Successfull",
             token, user
+        })
+    } catch (error) {
+        return res.status(400).json({
+            message: error.message
+        })
+    }
+}
+
+// controller for getting user by id 
+// GET: /api/users/data
+export const getUserById = async (req, res)=>{
+    try{
+        const userId = req.userId;
+        // check if user exists or not 
+        const user = await userModel.findById(userId);
+
+        if(!user) return res.status(404).json({
+            message: "User not found"
+        })
+
+        // return user
+        user.password = undefined;
+        res.status(200).json({
+            user
+        })
+    }catch(error){
+        return res.status(400).json({
+            message : error.message
+        })
+    }
+}
+
+// controller for getting userresume
+// GET: /api/users/resumes
+export const getUserResumes = async (req,res)=>{
+    try {
+        const userId = req.userId;
+
+        const resumes = await resumeModel.find({userId});
+        return res.status(200).json({
+            resumes
         })
     } catch (error) {
         return res.status(400).json({

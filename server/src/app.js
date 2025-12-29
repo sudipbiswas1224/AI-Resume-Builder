@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import userRouter from './routes/user.route';
 
 const app = express();
 
@@ -9,5 +10,7 @@ app.use(cors());
 app.get('/', (req, res) => {
     res.send('server is live')
 });
+
+app.use('/api/users', userRouter);
 
 export default app;

@@ -7,11 +7,16 @@
 -- connect mongoDB with server
 -- create userModel
 -- create controller for user
--- create routes for user
- -- take all the input from req.body
- -- check if any input is empty or not
- -- check if user already exists
- -- create new user
- -- hash the password using bcrypt
- -- create jsonwebtoken
- -- 
+    -- different functions for user registration and login
+    -- take all the input from req.body
+    -- check if any input is empty or not
+    -- check if user already exists
+    -- create new user
+    -- hash the password using bcrypt
+    -- create jsonwebtoken
+-- create auth middleware 
+-- create endpoints for user registration and login 
+
+
+-- create the resume model
+-- create controller for resume 
