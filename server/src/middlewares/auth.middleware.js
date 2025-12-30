@@ -2,7 +2,8 @@ import jwt from 'jsonwebtoken'
 
 const protect = async (req, res, next) => {
     // get token
-    const token = req.header.authorization;
+    const token = req.headers.authorization;
+    console.log(token);
     // check if token is present or not 
     if (!token) {
         return res.status(401).json({

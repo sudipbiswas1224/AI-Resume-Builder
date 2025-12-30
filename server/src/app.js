@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
-import userRouter from './routes/user.route';
+import userRouter from './routes/user.route.js';
+import resumeRouter from './routes/resume.routes.js';
 
 const app = express();
 
@@ -12,5 +13,6 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/users', userRouter);
+app.use('/api/resumes', resumeRouter)
 
 export default app;

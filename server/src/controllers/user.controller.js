@@ -1,8 +1,7 @@
 import bcrypt from 'bcrypt'
-import User from "../models/user.model";
-import userModel from '../models/user.model';
+import userModel from '../models/user.model.js';
 import jwt from 'jsonwebtoken'
-import resumeModel from '../models/resume.model';
+import resumeModel from '../models/resume.model.js';
 
 // generate token 
 const generateToken = (userId) => {
@@ -24,7 +23,7 @@ export const registerUser = async (req, res) => {
         }
 
         // check if user already exists or not
-        const user = await User.findOne({ email });
+        const user = await userModel.findOne({ email });
         if (user) {
             return res.status(400).json({
                 message: "User already exists"
@@ -33,7 +32,7 @@ export const registerUser = async (req, res) => {
 
         // create a new user
         const hashPassword = await bcrypt.hash(password, 10);
-        const newUser = userModel.create({
+            const newUser = await userModel.create({
             name, email, password: hashPassword
         })
 
@@ -61,7 +60,8 @@ export const loginUser = async (req, res) => {
 
     try {
         //check if user exists
-        const user = userModel.findOne({ email });
+        const user = await userModel.findOne({ email });
+        console.log(user);
 
         if (!user) {
             return res.status(404).json({
@@ -70,7 +70,8 @@ export const loginUser = async (req, res) => {
         }
 
         // check the password is correct
-        if (!user.comparePassword(password)) {
+            const isPasswordValid = await user.comparePassword(password);
+            if (!isPasswordValid) {
             return res.status(404).json({
                 message: 'Invalid user or password'
             })

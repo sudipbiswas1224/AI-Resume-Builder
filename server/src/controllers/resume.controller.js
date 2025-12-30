@@ -1,4 +1,7 @@
-import resumeModel from "../models/resume.model";
+import imagekit from "../configs/imageKit.js";
+import resumeModel from "../models/resume.model.js";
+import fs from 'fs'
+
 
 
 // controller for creating a new resume
@@ -102,9 +105,25 @@ export const updateResume = async (req, res) => {
     try {
         const userId = req.userId;
         const { resumeId, resumeData, removeBackground } = req.body;
-        const image = req.file; 
+        const image = req.file;
         const resumeDataCopy = JSON.parse(resumeData);
 
+        // image url generation with imagekit and saving it in the resumeData
+        if (image) {
+            const imageBufferData = fs.createReadStream(image.path);
+            const response = await imagekit.files.upload({
+                file: imageBufferData,
+                fileName: 'resume.png',
+                folder: 'user-resumes',
+                transformation: {
+                    pre: 'w-300,h-300,fo-face,z-0.75' + (removeBackground ? ',e-bgremove' : '')
+                }
+            });
+            // updating the image url in the personal_info of a user
+            resumeData.personal_info.image = response.url;
+
+        }
+        // updating resume in db and getting the updated resume 
         const resume = await resumeModel.findByIdAndUpdate({ userId, _id: resumeId }, resumeDataCopy, { new: true });
         if (!resume) {
             return res.status(404).json({
@@ -118,9 +137,11 @@ export const updateResume = async (req, res) => {
             resume
         });
 
-        
+
 
     } catch (error) {
-
+        return res.status(500).json({
+            message: error.message
+        })
     }
 }
